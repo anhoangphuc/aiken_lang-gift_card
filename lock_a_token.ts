@@ -72,8 +72,7 @@ async function redeemGiftCard (){
         .attachMintingPolicy(contracts.giftCard)
         .attachSpendingValidator(contracts.redeem)
         .mintAssets(
-            { [assetName]: BigInt(-1)}, burnRedeemer,
-        )
+            { [assetName]: BigInt(-1)}, burnRedeemer,)
         .complete()
 
     const txSigned = await tx.sign().complete();
