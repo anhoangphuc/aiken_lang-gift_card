@@ -7,6 +7,7 @@ import {
 } from "https://deno.land/x/lucid@0.10.1/mod.ts";
 import { applyParams, readValidators } from "./utils.ts";
 
+
 const lucid = await Lucid.new(
   new Blockfrost(
     "https://cardano-preview.blockfrost.io/api/v0",
@@ -14,6 +15,8 @@ const lucid = await Lucid.new(
   ),
   "Preview",
 );
+
+lucid.selectWalletFromPrivateKey(await Deno.readTextFile('./owner.sk'));
 
 async function submitTokenName(tokenName: string) {
   const utxos = await lucid?.wallet.getUtxos()!;
@@ -31,6 +34,11 @@ async function submitTokenName(tokenName: string) {
     lucid!,
   );
   return contracts;
+}
+
+async function investigate() {
+  const utxos = await lucid.wallet.getUtxos();
+  console.log(utxos);
 }
 
 async function createGiftCard() {
@@ -87,6 +95,8 @@ if (param === "create"){
     await createGiftCard();
 } else if (param === "redeem") {
     await redeemGiftCard();
+} else if (param === "investigate") { 
+    await investigate();
 } else {
     throw new Error("Invalid param");
 }
